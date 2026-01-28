@@ -4,12 +4,10 @@ const User = require("../models/user");
 const router = express.Router();
 const extractScore = (rawScore) => {
   if (typeof rawScore === "number") return rawScore;
-
   if (typeof rawScore === "string") {
     const match = rawScore.match(/\d+/);
     return match ? Number(match[0]) : 0;
   }
-
   return 0;
 };
 const cleanMarkdown = (text) => {
@@ -19,9 +17,7 @@ const cleanMarkdown = (text) => {
     .replace(/#+\s?/g, "")  
     .trim();
 };
-
 const upload = require("../config/multer");
-
 router.post(
   "/resume",
   auth,
@@ -29,25 +25,19 @@ router.post(
   async (req, res) => {
     try {
       const { score, strengths, weaknesses, analyzedAt } = req.body;
-
       if (!req.file) {
         return res.status(400).json({ message: "Resume file missing" });
       }
-
       const resumeUrl = req.file.path;
-
       const user = await User.findById(req.user.id);
       if (!user) {
         return res.status(404).json({ message: "User not found" });
       }
-
       const parsedScore = Math.min(100, Math.max(0, extractScore(score)));
-
       if (user.resume?.score !== undefined) {
         user.resume.previousScore = user.resume.score;
         user.resume.previousAnalyzedAt = user.resume.analyzedAt;
       }
-
       user.resume = {
         fileUrl: resumeUrl,
         score: parsedScore,
@@ -57,7 +47,6 @@ router.post(
         previousScore: user.resume?.previousScore,
         previousAnalyzedAt: user.resume?.previousAnalyzedAt,
       };
-
       await user.save();
       res.json(user.resume);
     } catch (err) {
