@@ -16,6 +16,9 @@ app.use("/api/jobs", jobRoutes);
 app.use("/api/users", userRoutes);
 app.use("/api/ai", aiRoutes);
 app.use("/api/resume", resumeRoutes); 
+app.get("/", (req, res) => {
+  res.json({ message: "CareerForge Backend API is running 🚀" });
+});
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
