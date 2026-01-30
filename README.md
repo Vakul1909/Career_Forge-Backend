@@ -38,7 +38,7 @@ Environment Management: dotenv
 
 Deployment: Render
 
-Learning Outcomes
+🧠 Learning Outcomes
 
 Secure REST API development
 
